@@ -101,7 +101,7 @@ class Solana {
           owner: senderWallet);
       return paramDic = {"status": "Done", "message": "$sol"};
     } catch (e) {
-      return paramDic = {"status": "Done", "message": "$e"};
+      return paramDic = {"status": "Error", "message": "$e"};
     }
   }
 
@@ -117,17 +117,33 @@ class Solana {
 
   Future<dynamic> getTokenbalance(
       {required String address,
-      required String tokenid,
+      required String tokenadress,
       required NetworkType networktype}) async {
-    SolanaClient client = _getclient(networktype);
-    var tr = await client.rpcClient.getTokenAccountsByOwner(
-        '$address',
-        encoding: Encoding.jsonParsed,
-        TokenAccountsFilter.byProgramId('$tokenid'));
-    print(tr.toJson());
+    try {
+      if (isValidSolanaAddress(tokenadress) == false) {
+        throw new ArgumentError('Invalid token address');
+      }
+      if (isValidSolanaAddress(address) == false) {
+        throw new ArgumentError('Invalid address');
+      }
+      SolanaClient client = _getclient(networktype);
 
-    return tr.toJson()['value'][0]['account']['data']['parsed']['info']
-        ['tokenAmount']['uiAmountString'];
+      var tokeninfo =
+          await getTokenInfo(address: '$tokenadress', networktype: networktype);
+      if (tokeninfo.toString().contains('NO')) {
+        throw new ArgumentError('Token not found');
+      }
+
+      var tr = await client.rpcClient.getTokenAccountsByOwner(
+          '$address',
+          encoding: Encoding.jsonParsed,
+          TokenAccountsFilter.byProgramId('${tokeninfo['value']['owner']}'));
+
+      return tr.toJson()['value'][0]['account']['data']['parsed']['info']
+          ['tokenAmount']['uiAmountString'];
+    } catch (e) {
+      return "$e";
+    }
   }
 
   Future<dynamic> getTokenInfo(
@@ -139,9 +155,43 @@ class Solana {
       print(tr.toJson());
       return tr.toJson();
     } catch (e) {
-      print(e);
       return {"NO": "no found"};
     }
     //data['value']['owner'].toString()
+  }
+
+  Future<dynamic> getTokenTransaction(
+      {required String walletaddress,
+      required String tokenname,
+      required NetworkType networktype}) async {
+    SolanaClient client = _getclient(networktype);
+    var trans = await client.rpcClient.getSignaturesForAddress(
+      '$walletaddress',
+    );
+    List _reportlist = [];
+    for (int i = 0; i < trans.length; i++) {
+      var decode = await getTransaction_Details(
+          trans[i].toJson()['signature'], networktype);
+      if (decode.containsKey('data')) {
+        continue;
+      }
+      if (decode['parsed']['type'] == 'transfer' &&
+          decode['program'] == tokenname) {
+        decode['parsed']['info']['hash'] = trans[i].toJson()['signature'];
+        decode['parsed']['info']['date'] = trans[i].toJson()['blockTime'];
+        _reportlist.add(decode['parsed']['info']);
+      }
+    }
+    return _reportlist;
+  }
+
+  Future<Map<String, dynamic>> getTransaction_Details(
+      String sign, NetworkType networktype) async {
+    SolanaClient client = _getclient(networktype);
+
+    var tr = await client.rpcClient.getTransaction(sign,
+        encoding: Encoding.jsonParsed, commitment: Commitment.finalized);
+    print(tr!.meta!.postTokenBalances.toString());
+    return tr!.transaction.toJson()['message']['instructions'][0];
   }
 }
