@@ -1,39 +1,66 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
+This Flutter package provides seamless interaction with the Solana blockchain. It supports functionalities like sending SOL and SPL tokens, 
+fetching wallet balances, and connecting to the Solana network. Built with developers in mind, the package ensures robust, secure, 
+and efficient transactions on the Solana blockchain.
 ## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+Send SOL: Transfer native SOL tokens to any Solana wallet address.
+Send SPL Tokens: Transfer any SPL token by specifying its mint address.
+Get Balance: Fetch the current SOL or SPL token balance of a wallet.
+Connect Wallet: Enable wallet connection and management.
+Network Configuration: Easily switch between mainnet, testnet, and devnet.
 
 ## Getting started
+Use this package as a library
+Depend on it
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+flutter pub add Solana_Wallet
 
 ## Usage
+Future<void> main() async {
+  var solana = Solana();
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+  ///Get the 12 words seed phrase with unique combination
+  var seed = await solana.generateMnemonic();
+  print("Seed phrase:-  $seed");
+
+  ///Get the Solana address with 12 words seed phrase.
+  var address = await solana.getSolanaAddress(mnemonic: seed);
+  print("Solana Address:- $address");
+
+  ///Get the sol coin balance with account address.
+  var solBalance = await solana.getbalance(
+      address: '7ZrqonmBFEqN7kkAKRwHr6aaWCrqANWSHGSEjNeNxVoj',
+      networktype: NetworkType.Devnet);
+  print("Sol balance:- $solBalance");
+
+  ///Testing seed phrase for Devnet
+  String testseed =
+      'annual route hard section online fall employ valve glow february box audit';
+
+  ///transfer the sol from one account to other account
+  await solana.SendSolCoin(
+          receiverAddress: 'B3iBp3F2xMHiwswx78RGzYiSVbQ54rpR9TmGUqdkA8d5',
+          amount: num.parse('0.01'),
+          networktype: NetworkType.Devnet,
+          mnemonic: testseed)
+      .then((Value) {
+    print(Value);
+    //SUCESS {status: Done, message: 46SSVqsikY1r6QVyZRu2mPnYxLBCuXkCWY5v9gtFScwRDWU935MTFMerK4sdANhdiM3eJZCgRUXcrwesguwHGEtE}
+  });
+
+  ///Transfer the Solana base Token from one account to other account
+  await solana.SendToken(
+          receiverAddress: 'B3iBp3F2xMHiwswx78RGzYiSVbQ54rpR9TmGUqdkA8d5',
+          tokenAddress: '7QgoLNQCLfAc5mbBuERVXma1SxFmCokPgh6LBTqdU5Vh',
+          amount: num.parse('0.01'),
+          networktype: NetworkType.Devnet,
+          mnemonic: testseed)
+      .then((Value) {
+    print(Value);
+    //SUCESS {status: Done, message: 46SSVqsikY1r6QVyZRu2mPnYxLBCuXkCWY5v9gtFScwRDWU935MTFMerK4sdANhdiM3eJZCgRUXcrwesguwHGEtE}
+  });
+}
 
 ```dart
-const like = 'sample';
+ const solana = Solana();
 ```
 
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
