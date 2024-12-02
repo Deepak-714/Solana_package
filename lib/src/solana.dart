@@ -1,4 +1,5 @@
 import 'package:Solana_Wallet/solana_package.dart';
+import 'package:solana/dto.dart';
 import 'package:solana/solana.dart';
 import 'package:Solana_Wallet/src/Content/AppContent.dart';
 import 'package:Solana_Wallet/src/bip39.dart';
@@ -52,6 +53,9 @@ class Solana {
       if (await isvalidateMnemonic(mnemonic) == false) {
         throw new ArgumentError('Invalid seed');
       }
+      if (isValidSolanaAddress(receiverAddress) == false) {
+        throw new ArgumentError('Invalid receiver address');
+      }
       SolanaClient client = _getclient(networktype);
 
       final senderWallet = await Ed25519HDKeyPair.fromMnemonic(mnemonic);
@@ -79,6 +83,12 @@ class Solana {
       if (await isvalidateMnemonic(mnemonic) == false) {
         throw new ArgumentError('Invalid seed');
       }
+      if (isValidSolanaAddress(receiverAddress) == false) {
+        throw new ArgumentError('Invalid receiver address');
+      }
+      if (isValidSolanaAddress(tokenAddress) == false) {
+        throw new ArgumentError('Invalid token address');
+      }
 
       SolanaClient client = _getclient(networktype);
 
@@ -93,5 +103,45 @@ class Solana {
     } catch (e) {
       return paramDic = {"status": "Done", "message": "$e"};
     }
+  }
+
+  Future<double> getbalance({
+    required String address,
+    required NetworkType networktype,
+  }) async {
+    SolanaClient client = _getclient(networktype);
+    var tr = await client.rpcClient.getBalance('$address');
+    print(tr.value / getPrecision(9));
+    return tr.value / getPrecision(9);
+  }
+
+  Future<dynamic> getTokenbalance(
+      {required String address,
+      required String tokenid,
+      required NetworkType networktype}) async {
+    SolanaClient client = _getclient(networktype);
+    var tr = await client.rpcClient.getTokenAccountsByOwner(
+        '$address',
+        encoding: Encoding.jsonParsed,
+        TokenAccountsFilter.byProgramId('$tokenid'));
+    print(tr.toJson());
+
+    return tr.toJson()['value'][0]['account']['data']['parsed']['info']
+        ['tokenAmount']['uiAmountString'];
+  }
+
+  Future<dynamic> getTokenInfo(
+      {required String address, required NetworkType networktype}) async {
+    SolanaClient client = _getclient(networktype);
+    try {
+      var tr = await client.rpcClient
+          .getAccountInfo(address, encoding: Encoding.jsonParsed);
+      print(tr.toJson());
+      return tr.toJson();
+    } catch (e) {
+      print(e);
+      return {"NO": "no found"};
+    }
+    //data['value']['owner'].toString()
   }
 }

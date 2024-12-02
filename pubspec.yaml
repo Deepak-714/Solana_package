@@ -1,5 +1,5 @@
 name: Solana_Wallet
-description: "A new Flutter package project."
+description: "This Flutter package provides seamless interaction with the Solana blockchain. It supports functionalities like sending SOL and SPL tokens, fetching wallet balances, and connecting to the Solana network. Built with developers in mind, the package ensures robust, secure, and efficient transactions on the Solana blockchain."
 version: 0.0.1
 homepage: https://github.com/Deepak-714/Solana_package
 

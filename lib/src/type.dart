@@ -1,5 +1,3 @@
-
-
 /// The number of lamport per sol (1 billion).
 const int lamportsPerSol = 1000000000;
 
@@ -21,6 +19,16 @@ BigInt _numToLamports(final num sol) {
 BigInt solToLamports(final num sol) {
   assert(sol is int || sol is double);
   return sol is int ? _intToLamports(sol) : _numToLamports(sol);
+}
+
+///Convert the value into bigint with  input number
+double getPrecision(int precision) {
+  double result = 1;
+  double baseValue = 10;
+  for (int i = 0; i < precision; i++) {
+    result = result * baseValue;
+  }
+  return result;
 }
 
 /// Num Extension
