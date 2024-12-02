@@ -1,9 +1,9 @@
-import 'package:Solana_Wallet/solana_package.dart';
+import 'package:solana_wallet/solana_package.dart';
 import 'package:solana/dto.dart';
 import 'package:solana/solana.dart';
-import 'package:Solana_Wallet/src/Content/AppContent.dart';
-import 'package:Solana_Wallet/src/bip39.dart';
-import 'package:Solana_Wallet/src/type.dart';
+import 'package:solana_wallet/src/Content/AppContent.dart';
+import 'package:solana_wallet/src/bip39.dart';
+import 'package:solana_wallet/src/type.dart';
 
 /// A Solana.
 class Solana {

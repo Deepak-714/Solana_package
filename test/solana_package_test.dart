@@ -1,4 +1,4 @@
-import 'package:Solana_Wallet/solana_package.dart';
+import 'package:solana_wallet/solana_package.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<void> main() async {

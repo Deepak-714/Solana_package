@@ -1,4 +1,4 @@
-library Solana_Wallet;
+library solana_wallet;
 
-export 'package:Solana_Wallet/src/solana.dart';
-export 'package:Solana_Wallet/src/networkextension.dart';
+export 'package:solana_wallet/src/solana.dart';
+export 'package:solana_wallet/src/networkextension.dart';
