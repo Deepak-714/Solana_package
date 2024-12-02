@@ -8,8 +8,10 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  bip39: ^1.0.6
   flutter:
     sdk: flutter
+  solana: ^0.31.0
 
 dev_dependencies:
   flutter_test:
