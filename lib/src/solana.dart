@@ -1,9 +1,8 @@
+import 'package:Solana_Wallet/solana_package.dart';
 import 'package:solana/solana.dart';
-import 'package:solana_package/src/Content/AppContent.dart';
-import 'package:solana_package/src/bip39.dart';
-import 'package:solana_package/src/type.dart';
-
-import '../solana_package.dart';
+import 'package:Solana_Wallet/src/Content/AppContent.dart';
+import 'package:Solana_Wallet/src/bip39.dart';
+import 'package:Solana_Wallet/src/type.dart';
 
 /// A Calculator.
 class Solana {

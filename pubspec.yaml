@@ -1,7 +1,7 @@
-name: solana_package
+name: Solana_Wallet
 description: "A new Flutter package project."
 version: 0.0.1
-homepage:
+homepage: https://github.com/Deepak-714/Solana_package
 
 environment:
   sdk: '>=3.4.4 <4.0.0'
