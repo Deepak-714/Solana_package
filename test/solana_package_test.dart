@@ -12,7 +12,13 @@ Future<void> main() async {
   var address = await solana.getSolanaAddress(mnemonic: seed);
   print("Solana Address:- $address");
 
-  ///Testing seed phrase (Devnet)
+  ///Get the sol coin balance with account address.
+  var solBalance = await solana.getbalance(
+      address: '7ZrqonmBFEqN7kkAKRwHr6aaWCrqANWSHGSEjNeNxVoj',
+      networktype: NetworkType.Devnet);
+  print("Sol balance:- $solBalance");
+
+  ///Testing seed phrase for Devnet
   String testseed =
       'annual route hard section online fall employ valve glow february box audit';
 

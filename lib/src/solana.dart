@@ -5,7 +5,7 @@ import 'package:Solana_Wallet/src/Content/AppContent.dart';
 import 'package:Solana_Wallet/src/bip39.dart';
 import 'package:Solana_Wallet/src/type.dart';
 
-/// A Calculator.
+/// A Solana.
 class Solana {
   /// Returns [value]  Mnemonic values.
   Future<String> generateMnemonic() async {
