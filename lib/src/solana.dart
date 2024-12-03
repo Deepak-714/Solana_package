@@ -28,14 +28,13 @@ class Solana {
 
   /// Returns  SolanaClient.
   SolanaClient _getclient(NetworkType networktype) {
-    SolanaClient client;
     if (networktype == NetworkType.Mainnet) {
-      return client = SolanaClient(
+      return SolanaClient(
         rpcUrl: Uri.parse(Content.Mainnet_RPC),
         websocketUrl: Uri.parse(Content.Mainnet_WEBRPC),
       );
     } else {
-      return client = SolanaClient(
+      return SolanaClient(
         rpcUrl: Uri.parse(Content.Devnet_RPC),
         websocketUrl: Uri.parse(Content.Devnet_WEBRPC),
       );
@@ -48,7 +47,6 @@ class Solana {
     required NetworkType networktype,
     required String mnemonic,
   }) async {
-    var paramDic;
     try {
       if (await isvalidateMnemonic(mnemonic) == false) {
         throw new ArgumentError('Invalid seed');
@@ -65,9 +63,9 @@ class Solana {
         lamports: solToLamports(amount).toInt(),
         source: senderWallet,
       );
-      return paramDic = {"status": "Done", "message": "$sol"};
+      return {"status": "Done", "message": "$sol"};
     } catch (e) {
-      return paramDic = {"status": "Error", "message": "$e"};
+      return {"status": "Error", "message": "$e"};
     }
   }
 
@@ -78,7 +76,6 @@ class Solana {
     required NetworkType networktype,
     required String mnemonic,
   }) async {
-    var paramDic;
     try {
       if (await isvalidateMnemonic(mnemonic) == false) {
         throw new ArgumentError('Invalid seed');
@@ -99,9 +96,9 @@ class Solana {
           destination: Ed25519HDPublicKey.fromBase58('$receiverAddress'),
           mint: Ed25519HDPublicKey.fromBase58(tokenAddress),
           owner: senderWallet);
-      return paramDic = {"status": "Done", "message": "$sol"};
+      return {"status": "Done", "message": "$sol"};
     } catch (e) {
-      return paramDic = {"status": "Error", "message": "$e"};
+      return {"status": "Error", "message": "$e"};
     }
   }
 
